@@ -5,7 +5,10 @@ import 'package:BusCardChecker/pages/request_service_flow.dart';
 import 'package:BusCardChecker/utils/constants.dart';
 import 'package:BusCardChecker/pages/home.dart';
 import 'package:BusCardChecker/Logo.dart';
-
+import 'package:BusCardChecker/NFCButton.dart';
+/**
+this section will be part of the main widget 
+ */
 void main() {
   runApp(MyApp());
 }
@@ -36,7 +39,7 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case "/":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return MainLogo();
+        return NFCButton();
         //return Home();
       });
     case "/repair-flow":
