@@ -51,9 +51,17 @@ class MySvgBG extends StatelessWidget {
 class WithSvgBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-        alignment: Alignment.center,
-        children: <Widget>[Positioned(child: MySvgBG(), top: 0)]);
+    return Stack(alignment: Alignment.center, children: <Widget>[
+      Positioned(
+          child: Container(
+            alignment: Alignment.center,
+            child: MySvgBG(),
+            color: Colors.white70,
+            padding: const EdgeInsets.all(0),
+          ),
+          top: 0),
+      NFCButton()
+    ]);
   }
 }
 

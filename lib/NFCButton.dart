@@ -1,48 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:adobe_xd/pinned.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
+import 'package:rive/rive.dart';
 
-class NFCButton extends StatelessWidget {
-  NFCButton({
-    Key key,
-  }) : super(key: key);
+class NFCButton extends StatefulWidget {
+  @override
+  NFCbuttonState createState() => NFCbuttonState();
+}
+
+class NFCbuttonState extends State<NFCButton>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Pinned.fromSize(
-          bounds: Rect.fromLTWH(0.0, 0.0, 147.4, 140.9),
-          size: Size(147.4, 140.9),
-          pinLeft: true,
-          pinRight: true,
-          pinTop: true,
-          pinBottom: true,
-          child: SvgPicture.string(
-            _svg_k50lo5,
-            allowDrawingOutsideViewBox: true,
-            fit: BoxFit.fill,
-          ),
-        ),
-        Pinned.fromSize(
-          bounds: Rect.fromLTWH(34.6, 42.8, 78.3, 54.8),
-          size: Size(147.4, 140.9),
-          pinLeft: true,
-          pinRight: true,
-          fixedHeight: true,
-          child:
-              // Adobe XD layer: 'FontAwsome (wifi)' (shape)
-              SvgPicture.string(
-            _svg_tziqay,
-            allowDrawingOutsideViewBox: true,
-            fit: BoxFit.fill,
-          ),
-        ),
-      ],
-    );
+    return MyHomePage();
   }
 }
 
-const String _svg_k50lo5 =
-    '<svg viewBox="0.0 0.0 147.4 140.9" ><defs><filter id="shadow"><feDropShadow dx="0" dy="3" stdDeviation="6"/></filter><linearGradient id="gradient" x1="0.852441" y1="0.090868" x2="0.19086" y2="0.900214"><stop offset="0.0" stop-color="#ff3ef6e4"  /><stop offset="1.0" stop-color="#ff99d1f8"  /></linearGradient></defs><path  d="M 73.71837615966797 0 C 114.4319000244141 0 147.4367523193359 31.53398323059082 147.4367523193359 70.43310546875 C 147.4367523193359 109.3322372436523 114.4319000244141 140.8662109375 73.71837615966797 140.8662109375 C 33.00484466552734 140.8662109375 0 109.3322372436523 0 70.43310546875 C 0 31.53398323059082 33.00484466552734 0 73.71837615966797 0 Z" fill="url(#gradient)" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" filter="url(#shadow)"/></svg>';
-const String _svg_tziqay =
-    '<svg viewBox="34.6 42.8 78.3 54.8" ><defs><linearGradient id="gradient" x1="0.582979" y1="0.0" x2="0.5" y2="1.000001"><stop offset="0.0" stop-color="#fff8e594"  /><stop offset="1.0" stop-color="#ffad7eff"  /></linearGradient></defs><path transform="translate(34.62, 10.78)" d="M 77.71110534667969 47.04000473022461 C 56.02624130249023 26.98299026489258 22.30005264282227 26.99032974243164 0.623742938041687 47.04000473022461 C -0.1914135962724686 47.7939567565918 -0.2073250561952591 49.07055282592773 0.580904483795166 49.85265731811523 L 4.771739959716797 54.01044845581055 C 5.523250579833984 54.75706100463867 6.732522010803223 54.77296829223633 7.513408184051514 54.05694961547852 C 25.3734130859375 37.6950798034668 52.95899963378906 37.69140243530273 70.82266998291016 54.05694961547852 C 71.60356140136719 54.77297592163086 72.81282806396484 54.75584030151367 73.56433868408203 54.01044845581055 L 77.75517272949219 49.85265731811523 C 78.54217529296875 49.07055282592773 78.52626800537109 47.7939567565918 77.71111297607422 47.04000473022461 Z M 39.16743087768555 71.16668701171875 C 34.84074020385742 71.16668701171875 31.3340950012207 74.67332458496094 31.3340950012207 79.00001525878906 C 31.3340950012207 83.32670593261719 34.84074020385742 86.83334350585938 39.16743087768555 86.83334350585938 C 43.4941291809082 86.83334350585938 47.00076675415039 83.32670593261719 47.00076675415039 79.00001525878906 C 47.00076675415039 74.67332458496094 43.4941291809082 71.16668701171875 39.16743087768555 71.16668701171875 Z M 63.97340393066406 60.93560409545898 C 49.86605453491211 48.45979690551758 28.4528923034668 48.4732551574707 14.36145401000977 60.93560409545898 C 13.51692295074463 61.68222427368164 13.48999404907227 62.97838973999023 14.29168796539307 63.76906204223633 L 18.50700378417969 67.92930603027344 C 19.24137878417969 68.65388488769531 20.4237232208252 68.70285034179688 21.20583152770996 68.0272216796875 C 31.48096656799316 59.14495468139648 46.87714767456055 59.16453170776367 57.1278076171875 68.0272216796875 C 57.90991592407227 68.70283508300781 59.09225463867188 68.65510559082031 59.82662963867188 67.92930603027344 L 64.04193878173828 63.76906204223633 C 64.84485626220703 62.97838973999023 64.81670379638672 61.68099594116211 63.97340393066406 60.93560409545898 Z" fill="url(#gradient)" stroke="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt" /></svg>';
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key key}) : super(key: key);
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  void _togglePlay() {
+    setState(() => _controller.isActive = !_controller.isActive);
+  }
+
+  /// Tracks if the animation is playing by whether controller is running.
+  bool get isPlaying => _controller?.isActive ?? false;
+
+  Artboard _riveArtboard;
+  RiveAnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+
+    // Load the animation file from the bundle, note that you could also
+    // download this. The RiveFile just expects a list of bytes.
+    rootBundle.load('assets/rive/rfc_button.riv').then(
+      (data) async {
+        final file = RiveFile();
+
+        // Load the RiveFile from the binary data.
+        if (file.import(data)) {
+          // The artboard is the root of the animation and gets drawn in the
+          // Rive widget.
+          final artboard = file.mainArtboard;
+          // Add a controller to play back a known animation on the main/default
+          // artboard.We store a reference to it so we can toggle playback.
+          artboard.addController(_controller = SimpleAnimation('PressMe'));
+          artboard.addController(_controller = SimpleAnimation('Pressing'));
+
+          setState(() => _riveArtboard = artboard);
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: _riveArtboard == null
+            ? const SizedBox()
+            : Rive(artboard: _riveArtboard),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _togglePlay,
+        tooltip: isPlaying ? 'Pause' : 'Play',
+        child: Icon(
+          isPlaying ? Icons.pause : Icons.play_arrow,
+        ),
+      ),
+    );
+  }
+}
