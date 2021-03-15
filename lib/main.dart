@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 /**
 this section will be part of the main widget 
 trying to add background and will shift into smth
+testing the new comment section would be suffice
  */
 void main() {
   runApp(MyApp());
