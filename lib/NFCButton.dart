@@ -23,15 +23,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _togglePlay() {
-    setState(() => _controller.isActive = !_controller.isActive);
-  }
-
   /// Tracks if the animation is playing by whether controller is running.
   bool get isPlaying => _controller?.isActive ?? false;
 
   Artboard _riveArtboard;
   RiveAnimationController _controller;
+  void _togglePlay() {
+    setState(() => _controller.isActive = !_controller.isActive);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -47,10 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // The artboard is the root of the animation and gets drawn in the
           // Rive widget.
           final artboard = file.mainArtboard;
+
           // Add a controller to play back a known animation on the main/default
           // artboard.We store a reference to it so we can toggle playback.
-          artboard.addController(_controller = SimpleAnimation('PressMe'));
           artboard.addController(_controller = SimpleAnimation('Pressing'));
+          artboard
+              .addController(_controller = SimpleAnimation('HandAnimation'));
 
           setState(() => _riveArtboard = artboard);
         }
