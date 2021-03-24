@@ -27,9 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
   bool get isPlaying => _controller?.isActive ?? false;
 
   Artboard _riveArtboard;
+
   RiveAnimationController _controller;
+  RiveAnimationController _controller2;
   void _togglePlay() {
-    setState(() => _controller.isActive = !_controller.isActive);
+    setState(() {
+      _controller.isActive = !_controller.isActive;
+    });
   }
 
   @override
@@ -44,15 +48,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // Load the RiveFile from the binary data.
         if (file.import(data)) {
+          SimpleAnimation waveAN = SimpleAnimation("Pressing");
+          SimpleAnimation handAN = SimpleAnimation("HandAnimation");
+
           // The artboard is the root of the animation and gets drawn in the
           // Rive widget.
           final artboard = file.mainArtboard;
 
           // Add a controller to play back a known animation on the main/default
           // artboard.We store a reference to it so we can toggle playback.
-          artboard.addController(_controller = SimpleAnimation('Pressing'));
-          artboard
-              .addController(_controller = SimpleAnimation('HandAnimation'));
+          artboard.addController(_controller = waveAN);
+          artboard.addController(_controller2 = handAN);
 
           setState(() => _riveArtboard = artboard);
         }
@@ -62,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _controller.isActiveChanged.addListener(() {
+      if (_controller.isActive) {
+        _controller2.isActive = true;
+      } else {
+        _controller2.isActive = false;
+      }
+    });
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(

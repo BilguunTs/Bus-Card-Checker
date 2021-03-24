@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//background-image: linear-gradient( 94.3deg,  rgba(26,33,64,1) 10.9%, rgba(81,84,115,1) 87.1% );
 Route<dynamic> _onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case "/":
@@ -49,12 +50,10 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
               gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                stops: [0.1, 0.5, 0.7, 0.9],
+                stops: [0.1, 0.9],
                 colors: [
-                  Colors.orange,
-                  Colors.orange.shade100,
-                  Colors.orange.shade200,
-                  Colors.orange.shade400,
+                  Color.fromRGBO(100, 130, 159, 100),
+                  Color.fromRGBO(103, 56, 96, 100),
                 ],
               ),
             ),
