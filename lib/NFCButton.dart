@@ -24,15 +24,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   /// Tracks if the animation is playing by whether controller is running.
-  bool get isPlaying => _controller?.isActive ?? false;
 
   Artboard _riveArtboard;
 
-  RiveAnimationController _controller;
-  RiveAnimationController _controller2;
+  RiveAnimationController _handController;
+  RiveAnimationController _scanningConroller;
+  RiveAnimationController _detectionController;
+
+  bool get isPlaying => _scanningConroller?.isActive ?? false;
+
   void _togglePlay() {
     setState(() {
-      _controller.isActive = !_controller.isActive;
+      _scanningConroller.isActive = !_scanningConroller.isActive;
     });
   }
 
@@ -48,8 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // Load the RiveFile from the binary data.
         if (file.import(data)) {
-          SimpleAnimation waveAN = SimpleAnimation("Pressing");
+          SimpleAnimation scanning = SimpleAnimation("Scanning");
           SimpleAnimation handAN = SimpleAnimation("HandAnimation");
+          SimpleAnimation detectedAnimation = SimpleAnimation("Detected");
 
           // The artboard is the root of the animation and gets drawn in the
           // Rive widget.
@@ -57,8 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
           // Add a controller to play back a known animation on the main/default
           // artboard.We store a reference to it so we can toggle playback.
-          artboard.addController(_controller = waveAN);
-          artboard.addController(_controller2 = handAN);
+          artboard.addController(_scanningConroller = scanning);
+          artboard.addController(_detectionController = detectedAnimation);
+          artboard.addController(_handController = handAN);
 
           setState(() => _riveArtboard = artboard);
         }
@@ -68,13 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _controller.isActiveChanged.addListener(() {
-      if (_controller.isActive) {
-        _controller2.isActive = true;
-      } else {
-        _controller2.isActive = false;
-      }
-    });
+    _scanningConroller.isActiveChanged.addListener(() {});
 
     return Scaffold(
       backgroundColor: Colors.transparent,
