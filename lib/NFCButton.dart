@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
-
+/**
+ Nfc button is triggered by its permisions 
+ just kidding  I don't actually know :) 
+ */
 class NFCButton extends StatefulWidget {
   @override
   NFCbuttonState createState() => NFCbuttonState();
