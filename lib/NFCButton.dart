@@ -26,22 +26,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class DetectionAnimation extends SimpleAnimation {
-  DetectionAnimation(String animationName) : super(animationName);
+class CancelAnimation extends SimpleAnimation {
+  CancelAnimation(String animationName) : super(animationName);
 
   start() {
     instance.animation.loop = Loop.oneShot;
-    isActive = true;
-  }
-
-  stop() => instance.animation.loop = Loop.pingPong;
-}
-
-class HandAnimation extends SimpleAnimation {
-  HandAnimation(String animationName) : super(animationName);
-
-  start() {
-    instance.animation.loop = Loop.loop;
     isActive = true;
   }
 
@@ -53,43 +42,62 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Artboard _riveArtboard;
 
-  HandAnimation _handController;
-  RiveAnimationController _scanningConroller;
-  DetectionAnimation _detectionController;
+  SimpleAnimation _handController;
+  SimpleAnimation _scanningConroller;
 
+  CancelAnimation _cancelController;
   bool _detectionOn = false;
   bool get isPlaying => _scanningConroller?.isActive ?? false;
 
-  void _toggleDetection(bool detectionOn) {
-    if (_detectionController == null) {
+  void _toggleDetection() {
+    if (_scanningConroller == null) {
       _riveArtboard.addController(
-        _detectionController = DetectionAnimation('Detected'),
+        _scanningConroller = SimpleAnimation('Detected'),
       );
     }
-    if (detectionOn) {
-      _detectionController.start();
-
-      setState(() => _detectionOn = true);
+    if (_detectionOn) {
+      _scanningConroller.instance.animation.loop = Loop.loop;
     } else {
-      _detectionController.stop();
-      setState(() => _detectionOn = false);
+      _scanningConroller.instance.animation.loop = Loop.oneShot;
     }
   }
 
-  void _toggleHandGesture(bool isDetected) {
-    if (isDetected) return;
+  void _toggleCancel() {
+    if (_cancelController == null) {
+      _riveArtboard.addController(
+        _cancelController = CancelAnimation('Cancel'),
+      );
+    }
+    if (_detectionOn) {
+      _cancelController.start();
+    } else {
+      _cancelController.stop();
+    }
+  }
+
+  void _toggleHandGesture() {
+    if (_detectionOn) return;
 
     if (_handController == null) {
       _riveArtboard.addController(
-        _handController = HandAnimation('HandAnimation'),
+        _handController = SimpleAnimation('HandAnimation'),
       );
     }
-    _handController.start();
+    _handController.instance.animation.loop = Loop.loop;
   }
 
-  void _togglePlay() {
+  void _togglePlay(bool active) {
+    // setState(() {
+    //   _scanningConroller.isActive = !_scanningConroller.isActive;
+    // });
+    if (active) {
+      _toggleDetection();
+    } else {
+      _toggleCancel();
+      _toggleHandGesture();
+    }
     setState(() {
-      _scanningConroller.isActive = !_scanningConroller.isActive;
+      _detectionOn != active;
     });
   }
 
@@ -105,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // Load the RiveFile from the binary data.
         if (file.import(data)) {
-          SimpleAnimation scanning = SimpleAnimation("Scanning");
-          //SimpleAnimation handAN = SimpleAnimation("HandAnimation");
+          _scanningConroller = SimpleAnimation("Scanning");
+          _handController = SimpleAnimation("HandAnimation");
           // SimpleAnimation detectedAnimation = SimpleAnimation("Detected");
 
           // The artboard is the root of the animation and gets drawn in the
@@ -115,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           // Add a controller to play back a known animation on the main/default
           // artboard.We store a reference to it so we can toggle playback.
-          artboard.addController(_scanningConroller = scanning);
+          artboard.addController(_scanningConroller);
           //  artboard.addController(_detectionController = detectedAnimation);
 
           setState(() => _riveArtboard = artboard);
@@ -126,8 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //_scanningConroller.isActiveChanged.addListener(() {});
-
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
@@ -137,8 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _toggleDetection(!_detectionOn);
-          _toggleHandGesture(_detectionOn);
+          _togglePlay(_detectionOn);
         },
         tooltip: isPlaying ? 'Pause' : 'Play',
         child: Icon(
