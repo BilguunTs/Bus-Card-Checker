@@ -34,7 +34,9 @@ class CancelAnimation extends SimpleAnimation {
     isActive = true;
   }
 
-  stop() => instance.animation.loop = Loop.oneShot;
+  reset() {
+    instance.reset();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -44,22 +46,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   SimpleAnimation _handController;
   SimpleAnimation _scanningConroller;
-
+  SimpleAnimation _zoomInController;
   CancelAnimation _cancelController;
   bool _detectionOn = false;
   bool get isPlaying => _scanningConroller?.isActive ?? false;
 
   void _toggleDetection() {
-    if (_scanningConroller == null) {
+    if (_zoomInController == null) {
       _riveArtboard.addController(
-        _scanningConroller = SimpleAnimation('Detected'),
+        _zoomInController = SimpleAnimation('Detected'),
       );
     }
-    if (_detectionOn) {
-      _scanningConroller.instance.animation.loop = Loop.loop;
-    } else {
-      _scanningConroller.instance.animation.loop = Loop.oneShot;
-    }
+    _handController.isActive = false;
+    _zoomInController.instance.reset();
+    _zoomInController.instance.animation.loop = Loop.oneShot;
+    _zoomInController.isActive = true;
   }
 
   void _toggleCancel() {
@@ -68,36 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
         _cancelController = CancelAnimation('Cancel'),
       );
     }
-    if (_detectionOn) {
-      _cancelController.start();
-    } else {
-      _cancelController.stop();
-    }
+
+    _handController.isActive = true;
+    _cancelController.reset();
+    _cancelController.start();
   }
 
-  void _toggleHandGesture() {
-    if (_detectionOn) return;
-
-    if (_handController == null) {
-      _riveArtboard.addController(
-        _handController = SimpleAnimation('HandAnimation'),
-      );
-    }
-    _handController.instance.animation.loop = Loop.loop;
-  }
-
-  void _togglePlay(bool active) {
-    // setState(() {
-    //   _scanningConroller.isActive = !_scanningConroller.isActive;
-    // });
-    if (active) {
-      _toggleDetection();
-    } else {
-      _toggleCancel();
-      _toggleHandGesture();
-    }
+  void _togglePlay() {
     setState(() {
-      _detectionOn != active;
+      _scanningConroller.isActive = !_scanningConroller.isActive;
     });
   }
 
@@ -124,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Add a controller to play back a known animation on the main/default
           // artboard.We store a reference to it so we can toggle playback.
           artboard.addController(_scanningConroller);
+          artboard.addController(_handController);
           //  artboard.addController(_detectionController = detectedAnimation);
 
           setState(() => _riveArtboard = artboard);
@@ -134,6 +115,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _scanningConroller.isActiveChanged.addListener(() {
+      if (_scanningConroller.isActive) {
+        _toggleCancel();
+      } else {
+        _toggleDetection();
+      }
+    });
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
@@ -142,9 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
             : Rive(artboard: _riveArtboard),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _togglePlay(_detectionOn);
-        },
+        onPressed: _togglePlay,
         tooltip: isPlaying ? 'Pause' : 'Play',
         child: Icon(
           isPlaying ? Icons.pause : Icons.play_arrow,
