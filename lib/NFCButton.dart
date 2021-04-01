@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-/**
- Nfc button is triggered by its permisions 
- just kidding  I don't actually know :) 
- */
 class NFCButton extends StatefulWidget {
   @override
   NFCbuttonState createState() => NFCbuttonState();
@@ -44,10 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Artboard _riveArtboard;
 
-  SimpleAnimation _handController;
-  SimpleAnimation _scanningConroller;
+  SimpleAnimation _scanningConroller = SimpleAnimation("Scanning");
+  SimpleAnimation _handController = SimpleAnimation("HandAnimation");
+  SimpleAnimation _cancelController = CancelAnimation('Cancel');
   SimpleAnimation _zoomInController;
-  CancelAnimation _cancelController;
+
   bool _detectionOn = false;
   bool get isPlaying => _scanningConroller?.isActive ?? false;
 
@@ -64,15 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _toggleCancel() {
-    if (_cancelController == null) {
-      _riveArtboard.addController(
-        _cancelController = CancelAnimation('Cancel'),
-      );
-    }
+    _riveArtboard.addController(_cancelController);
 
     _handController.isActive = true;
-    _cancelController.reset();
-    _cancelController.start();
+    _cancelController.instance.reset();
+    _cancelController.instance.animation.loop = Loop.oneShot;
+    _cancelController.isActive = true;
   }
 
   void _togglePlay() {
@@ -85,28 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    // Load the animation file from the bundle, note that you could also
-    // download this. The RiveFile just expects a list of bytes.
     rootBundle.load('assets/rive/rfc_button.riv').then(
       (data) async {
         final file = RiveFile();
-
-        // Load the RiveFile from the binary data.
         if (file.import(data)) {
-          _scanningConroller = SimpleAnimation("Scanning");
-          _handController = SimpleAnimation("HandAnimation");
-          // SimpleAnimation detectedAnimation = SimpleAnimation("Detected");
-
-          // The artboard is the root of the animation and gets drawn in the
-          // Rive widget.
           final artboard = file.mainArtboard;
-
-          // Add a controller to play back a known animation on the main/default
-          // artboard.We store a reference to it so we can toggle playback.
           artboard.addController(_scanningConroller);
           artboard.addController(_handController);
-          //  artboard.addController(_detectionController = detectedAnimation);
-
           setState(() => _riveArtboard = artboard);
         }
       },
@@ -115,6 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     _scanningConroller.isActiveChanged.addListener(() {
       if (_scanningConroller.isActive) {
         _toggleCancel();
@@ -124,10 +105,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Center(
-        child: _riveArtboard == null
-            ? const SizedBox()
-            : Rive(artboard: _riveArtboard),
+      body: Stack(
+        children: [
+          Center(
+            child: _riveArtboard == null
+                ? const SizedBox()
+                : Rive(artboard: _riveArtboard),
+          ),
+          new Positioned(
+              left: 0,
+              top: 0,
+              child: new Container(
+                width: width,
+                height: height,
+                decoration: new BoxDecoration(color: Colors.transparent),
+                child: Center(
+                  child: new Text('hello'),
+                ),
+              )),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _togglePlay,
