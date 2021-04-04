@@ -4,9 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:BusCardChecker/pages/request_service_flow.dart';
 import 'package:BusCardChecker/utils/constants.dart';
 import 'package:BusCardChecker/pages/home.dart';
-import 'package:BusCardChecker/Logo.dart';
+
 import 'package:BusCardChecker/NFCButton.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 /**
 this section will be part of the main widget 
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
       allowFontScaling: false,
       builder: () => MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: "Hi",
         theme: ThemeData(
           primaryColor: Constants.primaryColor,
           scaffoldBackgroundColor: Colors.white,
