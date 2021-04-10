@@ -5,28 +5,12 @@ class CardData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double bodyHeight = height - Scaffold.of(context).appBarMaxHeight;
     return Container(
       alignment: Alignment.center,
       color: Colors.transparent,
-      constraints: BoxConstraints(
-        maxHeight: bodyHeight,
-        minWidth: 100,
-        maxWidth: width,
-      ),
-      child: SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              "this is text but number",
-              style: TextStyle(fontSize: 60),
-            ),
-          ),
           DataTable(
             columns: const <DataColumn>[
               DataColumn(
@@ -118,7 +102,14 @@ class CardData extends StatelessWidget {
                   DataCell(Text('27')),
                   DataCell(Text('Associate Professor')),
                 ],
-              )
+              ),
+              DataRow(
+                cells: <DataCell>[
+                  DataCell(Text('William')),
+                  DataCell(Text('27')),
+                  DataCell(Text('Associate Professor')),
+                ],
+              ),
             ],
           ),
           Container(
@@ -129,8 +120,112 @@ class CardData extends StatelessWidget {
             ),
           )
         ],
-      )),
+      ),
     );
     ;
+  }
+}
+
+class SliverTest extends StatefulWidget {
+  const SliverTest() : super();
+
+  @override
+  State<StatefulWidget> createState() => _SliverTest();
+}
+
+class _SliverTest extends State<SliverTest> {
+  bool _snap = false;
+  bool _floating = false;
+
+  // SliverAppBar is declared in Scaffold.body, in slivers of a
+  // CustomScrollView.
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: Colors.black,
+            pinned: false,
+            snap: this._snap,
+            floating: this._floating,
+            expandedHeight: height / 4,
+            centerTitle: true,
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 3,
+                    child: Container(),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      "10000₮",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                ],
+              ),
+              background: FlutterLogo(),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              child: CardData(),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: ButtonBar(
+          alignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                const Text('snap'),
+                Switch(
+                  onChanged: (bool val) {
+                    setState(() {
+                      this._snap = val;
+                      //Snapping only applies when the app bar is floating.
+                      this._floating = this._floating || val;
+                    });
+                  },
+                  value: this._snap,
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                const Text('floating'),
+                Switch(
+                  onChanged: (bool val) {
+                    setState(() {
+                      this._floating = val;
+                      if (this._snap == true) {
+                        if (this._floating != true) {
+                          this._snap = false;
+                        }
+                      }
+                    });
+                  },
+                  value: this._floating,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

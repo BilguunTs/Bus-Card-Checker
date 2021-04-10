@@ -105,20 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "hi",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-            icon: Icon(Icons.chevron_left),
-            onPressed: () {
-              print("hi");
-            },
-            color: Colors.white),
-      ),
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
@@ -135,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: height,
                 decoration: new BoxDecoration(color: Colors.transparent),
                 child: Center(
-                  child: !isPlaying ? CardData() : null,
+                  child: !isPlaying ? SliverTest() : null,
                 ),
               )),
         ],
