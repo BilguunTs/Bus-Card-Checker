@@ -144,47 +144,51 @@ class _SliverTest extends State<SliverTest> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            backgroundColor: Colors.black,
-            pinned: false,
-            snap: this._snap,
-            floating: this._floating,
-            expandedHeight: height / 4,
-            centerTitle: true,
-            flexibleSpace: FlexibleSpaceBar(
+      body: AnimatedContainer(
+        duration: Duration(seconds: 2),
+        curve: Curves.fastOutSlowIn,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.black,
+              pinned: false,
+              snap: this._snap,
+              floating: this._floating,
+              expandedHeight: height / 4,
               centerTitle: true,
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    flex: 3,
-                    child: Container(),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Text(
-                      "10000₮",
-                      style: TextStyle(fontSize: 30),
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 3,
+                      child: Container(),
                     ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                ],
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        "10000₮",
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(),
+                    ),
+                  ],
+                ),
+                background: FlutterLogo(),
               ),
-              background: FlutterLogo(),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: height,
-              child: CardData(),
+            SliverToBoxAdapter(
+              child: Container(
+                height: height,
+                child: CardData(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: ButtonBar(
