@@ -120,8 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: width,
                 height: height,
                 decoration: new BoxDecoration(color: Colors.transparent),
-                child: Center(
-                  child: !isPlaying ? SliverTest() : null,
+                child: AnimatedOpacity(
+                  opacity: isPlaying ? 0 : 1,
+                  duration: Duration(seconds: 1),
+                  child: Center(
+                      child: SliverTest(
+                    shouldRender: !isPlaying,
+                  )),
                 ),
               )),
         ],

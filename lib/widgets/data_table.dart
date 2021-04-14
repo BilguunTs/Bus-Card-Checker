@@ -126,34 +126,34 @@ class CardData extends StatelessWidget {
   }
 }
 
-class SliverTest extends StatefulWidget {
-  const SliverTest() : super();
-
-  @override
-  State<StatefulWidget> createState() => _SliverTest();
-}
-
-class _SliverTest extends State<SliverTest> {
-  bool _snap = false;
-  bool _floating = false;
-
-  // SliverAppBar is declared in Scaffold.body, in slivers of a
+class SliverTest extends StatelessWidget {
+  bool shouldRender = false;
+  SliverTest({bool shouldRender}) {
+    this.shouldRender = shouldRender;
+  }
+// SliverAppBar is declared in Scaffold.body, in slivers of a
   // CustomScrollView.
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AnimatedContainer(
-        duration: Duration(seconds: 2),
-        curve: Curves.fastOutSlowIn,
+        transform: !shouldRender
+            ? (Matrix4.identity()
+              ..translate(0.025 * width, 0.025 * height)
+              ..scale(0.95, 0.95))
+            : Matrix4.identity(),
+        duration: Duration(seconds: 1),
+        curve: Curves.easeInOutSine,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               backgroundColor: Colors.black,
               pinned: false,
-              snap: this._snap,
-              floating: this._floating,
+              snap: false,
+              floating: false,
               expandedHeight: height / 4,
               centerTitle: true,
               flexibleSpace: FlexibleSpaceBar(
@@ -197,34 +197,11 @@ class _SliverTest extends State<SliverTest> {
             Row(
               children: <Widget>[
                 const Text('snap'),
-                Switch(
-                  onChanged: (bool val) {
-                    setState(() {
-                      this._snap = val;
-                      //Snapping only applies when the app bar is floating.
-                      this._floating = this._floating || val;
-                    });
-                  },
-                  value: this._snap,
-                ),
               ],
             ),
             Row(
               children: <Widget>[
                 const Text('floating'),
-                Switch(
-                  onChanged: (bool val) {
-                    setState(() {
-                      this._floating = val;
-                      if (this._snap == true) {
-                        if (this._floating != true) {
-                          this._snap = false;
-                        }
-                      }
-                    });
-                  },
-                  value: this._floating,
-                ),
               ],
             ),
           ],
