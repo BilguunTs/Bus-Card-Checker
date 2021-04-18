@@ -14,21 +14,24 @@ class CardData extends StatelessWidget {
           DataTable(
             columns: const <DataColumn>[
               DataColumn(
-                label: Text(
-                  'Name',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
+                label: Text('үлдэгдэл',
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                        fontSize: 25.0)),
               ),
               DataColumn(
                 label: Text(
-                  'Age',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  'буудал',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Colors.white),
                 ),
               ),
               DataColumn(
                 label: Text(
                   'Role',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Colors.white),
                 ),
               ),
             ],
@@ -38,76 +41,6 @@ class CardData extends StatelessWidget {
                   DataCell(Text('Sarah')),
                   DataCell(Text('19')),
                   DataCell(Text('Student')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('Janine')),
-                  DataCell(Text('43')),
-                  DataCell(Text('Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
-                ],
-              ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('William')),
-                  DataCell(Text('27')),
-                  DataCell(Text('Associate Professor')),
                 ],
               ),
             ],
@@ -178,7 +111,10 @@ class SliverTest extends StatelessWidget {
                     ),
                   ],
                 ),
-                background: FlutterLogo(),
+                background: Image.network(
+                  'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SliverToBoxAdapter(
