@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:BusCardChecker/pages/request_service_flow.dart';
 import 'package:BusCardChecker/utils/constants.dart';
 import 'package:BusCardChecker/pages/home.dart';
 
 import 'package:BusCardChecker/NFCButton.dart';
+import "package:BusCardChecker/widgets/NFCscanner.dart";
 
 void main() {
-  runApp(MyApp());
+  runApp(Provider(
+    create: (_) => NFCReader(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

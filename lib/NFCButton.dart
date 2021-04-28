@@ -1,7 +1,9 @@
+import 'package:BusCardChecker/widgets/NFCscanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:BusCardChecker/widgets/data_table.dart';
+import 'package:provider/provider.dart';
 
 class NFCButton extends StatefulWidget {
   @override
@@ -95,12 +97,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final testValue = context.watch<NFCReader>();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     _scanningConroller.isActiveChanged.addListener(() {
       if (_scanningConroller.isActive) {
         _toggleCancel();
       } else {
+        print(testValue);
         _toggleDetection();
       }
     });
