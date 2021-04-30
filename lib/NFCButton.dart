@@ -97,14 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final testValue = context.watch<NFCReader>();
+    final reading = context.watch<NFCReader>().reading;
+
     double width = MediaQuery.of(context).size.width;
+
     double height = MediaQuery.of(context).size.height;
     _scanningConroller.isActiveChanged.addListener(() {
       if (_scanningConroller.isActive) {
         _toggleCancel();
       } else {
-        print(testValue);
         _toggleDetection();
       }
     });

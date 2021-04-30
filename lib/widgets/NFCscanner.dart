@@ -1,70 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'dart:async';
 import "package:provider/provider.dart";
+import 'package:flutter/foundation.dart';
 
-class NFCReader extends StatefulWidget {
-  @override
-  _NFCReaderState createState() => _NFCReaderState();
-}
-
-class _NFCReaderState extends State {
+class NFCReader with ChangeNotifier, DiagnosticableTreeMixin {
   bool _supportsNFC = false;
-  bool _reading = false;
-  StreamSubscription<NDEFMessage> _stream;
-  bool getReading() {
-    return _reading;
-  }
+  int _reading = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    // Check if the device supports NFC reading
-    NFC.isNDEFSupported.then((bool isSupported) {
-      setState(() {
-        _supportsNFC = isSupported;
-      });
-    });
+  int get reading => _reading;
+  StreamSubscription<NDEFMessage> _stream;
+
+  void checkSupport() {
+    print("hi this is from scanner class");
+    notifyListeners();
+    //NFC.isNDEFSupported.then((bool isSupported) {});
   }
 
   void startReading() {
-    if (_reading) {
+    if (_reading == 1) {
       _stream?.cancel();
-      setState(() {
-        _reading = false;
-      });
+      _reading = 0;
     } else {
-      setState(() {
-        _reading = true;
-        // Start reading using NFC.readNDEF()
-        _stream = NFC
-            .readNDEF(
-          once: true,
-          throwOnUserCancel: false,
-        )
-            .listen((NDEFMessage message) {
-          print("read NDEF message: ${message.payload}");
-        }, onError: (e) {
-          // Check error handling guide below
-        });
+      _reading = 1;
+      // Start reading using NFC.readNDEF()
+      _stream = NFC
+          .readNDEF(
+        once: true,
+        throwOnUserCancel: false,
+      )
+          .listen((NDEFMessage message) {
+        print("read NDEF message: ${message.payload}");
+      }, onError: (e) {
+        // Check error handling guide below
       });
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (!_supportsNFC) {
-      return RaisedButton(
-        child: const Text("You device does not support NFC"),
-        onPressed: null,
-      );
-    }
-    return Provider.value(
-      value: _reading,
-      child: Provider.value(
-        value: this,
-        child: null,
-      ),
-    );
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    properties.add(IntProperty("reading", _reading));
   }
 }
