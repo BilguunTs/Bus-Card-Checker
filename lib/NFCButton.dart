@@ -1,6 +1,7 @@
 import 'package:BusCardChecker/widgets/NFCscanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:rive/rive.dart';
 import 'package:BusCardChecker/widgets/data_table.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
   SimpleAnimation _cancelController = CancelAnimation('Cancel');
   SimpleAnimation _zoomInController;
 
-  bool _detectionOn = false;
   bool get isPlaying => _scanningConroller?.isActive ?? false;
 
   void _toggleDetection() {
@@ -97,18 +97,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final reading = context.watch<NFCReader>().reading;
-
+    int reading = context.watch<NFCReader>().reading;
+    if (reading == 1) {
+      print("hey I can do something here-> 0");
+    } else if (reading == 0) {
+      print("hey I can do something here-> 1");
+    }
     double width = MediaQuery.of(context).size.width;
-
     double height = MediaQuery.of(context).size.height;
-    _scanningConroller.isActiveChanged.addListener(() {
-      if (_scanningConroller.isActive) {
-        _toggleCancel();
-      } else {
-        _toggleDetection();
-      }
-    });
+    // _scanningConroller.isActiveChanged.addListener(() {
+    //   if (_scanningConroller.isActive) {
+    //     _toggleCancel();
+    //   } else {
+    //     _toggleDetection();
+    //   }
+    // });
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -137,7 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _togglePlay,
+        onPressed: () {        
+          context.read<NFCReader>().toggle();
+          _togglePlay();
+        },
         tooltip: isPlaying ? 'Pause' : 'Play',
         child: Icon(
           isPlaying ? Icons.pause : Icons.play_arrow,

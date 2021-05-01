@@ -71,7 +71,7 @@ class SliverTest extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       body: AnimatedContainer(
         transform: !shouldRender
             ? (Matrix4.identity()
@@ -126,23 +126,23 @@ class SliverTest extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: ButtonBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Text('snap'),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                const Text('floating'),
-              ],
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   child: ButtonBar(
+      //     alignment: MainAxisAlignment.spaceEvenly,
+      //     children: <Widget>[
+      //       Row(
+      //         children: <Widget>[
+      //           const Text('snap'),
+      //         ],
+      //       ),
+      //       Row(
+      //         children: <Widget>[
+      //           const Text('floating'),
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

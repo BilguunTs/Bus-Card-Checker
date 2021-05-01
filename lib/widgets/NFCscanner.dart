@@ -13,28 +13,40 @@ class NFCReader with ChangeNotifier, DiagnosticableTreeMixin {
   StreamSubscription<NDEFMessage> _stream;
 
   void checkSupport() {
-    print("hi this is from scanner class");
+    NFC.isNDEFSupported.then((bool isSupported) {
+      print(isSupported);
+    });
     notifyListeners();
-    //NFC.isNDEFSupported.then((bool isSupported) {});
+  }
+
+  void toggle() {
+    if (_reading == 0) {
+      _reading = 1;
+    } else {
+      _reading = 0;
+    }
+    notifyListeners();
   }
 
   void startReading() {
+    _stream = NFC
+        .readNDEF(
+      once: false,
+      throwOnUserCancel: false,
+    )
+        .listen((NDEFMessage message) {
+      print("read NDEF message: ${message.payload}");
+    }, onError: (e) {
+      print("Уншиж чадахгүй байна");
+    });
+
     if (_reading == 1) {
       _stream?.cancel();
       _reading = 0;
     } else {
       _reading = 1;
       // Start reading using NFC.readNDEF()
-      _stream = NFC
-          .readNDEF(
-        once: true,
-        throwOnUserCancel: false,
-      )
-          .listen((NDEFMessage message) {
-        print("read NDEF message: ${message.payload}");
-      }, onError: (e) {
-        // Check error handling guide below
-      });
+
     }
   }
 
