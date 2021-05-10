@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/**
+ * bug report: doesn't working nfc scan  
+ */
 class CardData extends StatelessWidget {
   const CardData({Key key}) : super(key: key);
 
